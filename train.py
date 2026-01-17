@@ -1,4 +1,6 @@
+# import pandas as pd
 import numpy as np
+from load_data import load_train_data
 
 def calculate_f_wb(x: np.ndarray, m: int, w: float, b: float) -> np.ndarray:
     f_wb = np.zeros(m)
@@ -29,21 +31,31 @@ def calculate_gradient(f_wb: np.ndarray, x_train: np.ndarray, y_train: np.ndarra
 
 
 def main():
-    
-    # set w and b to 0
-    # learning_rate = 0.1 # arbitrary until I know how to choose an appropriate one
-    # load csv
-    # separate to x_train, y_train
-    # m = df.shape[0]
-    # f_wb = calculate_f_wb()
-    # cost = calculate_cost (f_wb, y_train, w, b)
-    # dj_w, dj_b = calculate_gradient(f_wb_i, x_train, y_train, m)
-    # w = w - dj_w
-    # b = b - dj_b
+    try:
+        x_train, y_train = load_train_data("data.csv")
+        w, b = 0, 0
+        rate = 1e-4
+        m = len(x_train)
+        iterations = 1000000
+        cost = 80
+        
+        for i in range(iterations):
+            f_wb = calculate_f_wb(x_train, m, w, b)
+            dj_w, dj_b = calculate_gradient(f_wb, x_train, y_train, m)
+            w = w - (rate * dj_w)
+            b = b - (rate * dj_b)
+            f_wb = calculate_f_wb(x_train, m, w, b)
+            prev_cost = cost
+            cost = calculate_cost(f_wb, y_train, m)
+            if prev_cost - cost < 1e-6:
+                break
+            print(f"{i}th iteration: cost = {cost}")
+        np.savez("model_params.npz", w=w, b=b)
+
     # repeat above steps until we reach convergence (or just choose a big number of iterations??)
-    # last step: save final w, b to a file to use in predict.py
-    pass
-    
+
+    except Exception as e:
+        print(f"{type(e).__name__}: {e}")    
 
 
 

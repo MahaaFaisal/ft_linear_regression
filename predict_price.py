@@ -1,6 +1,12 @@
+import numpy as np
+
 
 def load_parameters(path: str):
-    pass
+    data = np.load(path)
+    w = data['w']
+    b = data['b']
+    return w, b
+
 
 def get_user_input():
     while True:
@@ -10,14 +16,14 @@ def get_user_input():
             break
         except:
             print("Invalid number, try again or press ctrl+D to exit")
-    return miliage
+    return miliage / 1000
 
 
 def predict_price(miliage: float, w: float, b: float):
-    return w * miliage + b
+    return ((w * miliage) + b) * 1000
 
 def main():
-    w, b = load_parameters("parameters.txt")
+    w, b = load_parameters("model_params.npz")
     miliage = get_user_input()
     print(f"the estimated price is: {predict_price(miliage, w, b)}")
 
