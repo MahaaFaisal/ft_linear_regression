@@ -17,6 +17,7 @@ loads it to dataframe
     print(f"Loading dataset of dimensions {df.shape}")
     return df
 
+
 def load_train_data(path: str):
     df = load_file(path)
     x = df["km"].to_numpy() / 1000.0
