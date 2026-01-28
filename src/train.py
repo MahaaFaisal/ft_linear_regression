@@ -3,21 +3,15 @@ import numpy as np
 from load_data import load_train_data
 from plot import plot_regression
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 
 
-def calculate_f_wb(x: np.ndarray, m: int, w: float, b: float) -> np.ndarray:
-    f_wb = np.zeros(m)
-    for i in range(m):
-      f_wb[i] = (w * x[i]) + b
-    return f_wb
+def calculate_f_wb(x: np.ndarray, w: float, b: float) -> np.ndarray:
+    return w * x + b
 
 
 def calculate_cost(f_wb: np.ndarray, y_train: np.ndarray, m: int) -> float:
-    cost = 0
-    for i in range(m):
-        cost = cost + (f_wb[i] - y_train[i]) ** 2
-    cost = cost / (2 * m)
+    cost = np.sum((f_wb - y_train) ** 2) / (2 * m)
+
     return cost
 
 
@@ -25,11 +19,9 @@ def calculate_gradient(f_wb: np.ndarray, x_train: np.ndarray, y_train: np.ndarra
     dj_w = 0
     dj_b = 0
 
-    for i in range(m):
-        dj_w = dj_w + (x_train[i] * (f_wb[i] - y_train[i]))
-        dj_b = dj_b + (f_wb[i] - y_train[i])
-    dj_w = dj_w / m
-    dj_b = dj_b / m
+    dj_w = np.sum(x_train * (f_wb - y_train))/m
+    dj_b = np.sum(f_wb - y_train)/m
+
     return dj_w, dj_b
 
 
@@ -40,12 +32,12 @@ def gradient_descent(x_train: np.ndarray, y_train: np.ndarray) -> tuple:
     iterations = 200000
     cost = 80
 
-    f_wb = calculate_f_wb(x_train, m, w, b)
+    f_wb = calculate_f_wb(x_train, w, b)
     for i in range(iterations):
         dj_w, dj_b = calculate_gradient(f_wb, x_train, y_train, m)
         w = w - (rate * dj_w)
         b = b - (rate * dj_b)
-        f_wb = calculate_f_wb(x_train, m, w, b)
+        f_wb = calculate_f_wb(x_train, w, b)
         prev_cost = cost
         cost = calculate_cost(f_wb, y_train, m)
         if prev_cost - cost < 1e-6:

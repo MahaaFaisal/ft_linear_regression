@@ -30,7 +30,7 @@ def predict_price(miliage: float, w: float, b: float):
 def main():
     try:
         w, b = load_parameters("../model_params.npz")
-        assert isinstance(w, float) and isinstance(b, float),"w and b should be float"
+        assert isinstance(w, float) and isinstance(b, float), "w and b should be float"
         miliage = get_user_input()
         print(f"the estimated price is: {predict_price(miliage, w, b)}")
     except Exception as e:
