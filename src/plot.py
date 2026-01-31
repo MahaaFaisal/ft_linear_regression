@@ -3,11 +3,6 @@ import numpy as np
 from predict_price import predict_price
 
 
-def predict_y(x_train: np.ndarray, w: float, b: float, x_mu, x_std):
-    y_pred = w * x_train + b
-    return y_pred
-
-
 def plot_data(x_train: np.ndarray, y_train: np.ndarray,):
     plt.scatter(x_train, y_train, marker='x', color="red")
     pass
@@ -18,15 +13,24 @@ def plot_line(x_train: np.ndarray, y_predict: np.ndarray):
     pass
 
 
-def plot_regression(x_train: np.ndarray, y_train: np.ndarray,
-                    w: float, b: float, x_mu, x_std, y_mu, y_std) -> None:
+def plot_regression(x_train, y_train, model):
+    if not model.is_trained:
+        raise ValueError("Cannot plot untrained model")
+    
+    plt.figure(figsize=(10, 6))
     plt.title("Relationship Between Car Mileage and Price")
-    plt.xlabel("miliage")
-    plt.ylabel("price in KM")
-    x_orig = x_train * x_std + x_mu
-    y_orig = y_train * y_std + y_mu
-    plot_data(x_orig, y_orig)
-    y_predict = predict_y(x_train, w, b, x_mu, x_std)
-    y_p_orig = y_predict * y_std + y_mu
-    plot_line(x_orig, y_p_orig)
+    plt.xlabel("Mileage (km)")
+    plt.ylabel("Price")
+    
+    plt.scatter(x_train, y_train, marker='x', color='red', 
+                label='Training data', alpha=0.7)
+    
+    y_pred = model.predict(x_train)
+    plt.plot(x_train, y_pred, color='black', linewidth=2, 
+             label='Regression line')
+    
+    plt.legend()
+    plt.grid(True, alpha=0.9, which='major')
+    plt.grid(True, alpha=0.1, which='minor')
+    plt.minorticks_on()
     plt.show()

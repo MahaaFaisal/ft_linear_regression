@@ -27,8 +27,6 @@ def z_score_scale(x: pd.Series) -> pd.Series:
 
 def load_train_data(path: str):
     df = load_file(path)
-    x = df["km"]
-    x_scaled, x_mu, x_std = z_score_scale(x)
-    y = df["price"]
-    y_scaled, y_mu, y_std = z_score_scale(y)
-    return x_scaled.to_numpy(), y_scaled.to_numpy(), x_mu, x_std, y_mu, y_std
+    x = df["km"].to_numpy()
+    y = df["price"].to_numpy()
+    return x, y
