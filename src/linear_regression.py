@@ -48,13 +48,21 @@ class LinearRegression():
             self.x_std = data['x_std']
             self.y_mu = data['y_mu']
             self.y_std = data['y_std']
+            self.is_trained = True
 
         except Exception:
             print("failed to load parameters, using untrained model")
+            self.w = 0
+            self.b = 0
+            self.x_mu = 0
+            self.x_std = 1
+            self.y_mu = 0
+            self.y_std = 1
 
     def scale_x(self, x):
-        self.x_mu = x.mean()
-        self.x_std = x.std(ddof=0)
+        if (isinstance(x, np.ndarray)):
+            self.x_mu = x.mean()
+            self.x_std = x.std(ddof=0)
         return (x - self.x_mu) / self.x_std
 
     def unscale_x(self, x_scaled):

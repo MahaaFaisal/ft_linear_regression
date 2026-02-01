@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from predict_price import predict_price
 
 
 def plot_data(x_train: np.ndarray, y_train: np.ndarray,):
