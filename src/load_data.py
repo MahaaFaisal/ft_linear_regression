@@ -1,6 +1,5 @@
 import pandas as pd
-import numpy as np
-from sklearn.preprocessing import StandardScaler
+
 
 def check_path(path: str) -> None:
     if not isinstance(path, str):
@@ -17,12 +16,6 @@ loads it to dataframe
     df = pd.read_csv(path)
     print(f"Loading dataset of dimensions {df.shape}")
     return df
-
-def z_score_scale(x: pd.Series) -> pd.Series:
-    mu = x.mean()
-    std = x.std(ddof=0)
-    z_score_scaled = (x - mu) / std
-    return z_score_scaled, mu, std
 
 
 def load_train_data(path: str):

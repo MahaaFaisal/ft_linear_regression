@@ -20,6 +20,7 @@ def main():
         # assert isinstance(w, float) and isinstance(b, float), "w and b should be float"
         miliage = get_user_input()
         print(f"the estimated price is: {model.predict(miliage)}")
+
     except Exception as e:
         print(f"{type(e).__name__}: {e}")
     except KeyboardInterrupt:
